@@ -11,9 +11,6 @@ const sketch = (s) => {
         s.createCanvas(width, height);
     }
 
-    s.draw = () => {
-        s.background(0);
-    }
 
     s.mousePressed = () => {
         
@@ -24,6 +21,16 @@ const sketch = (s) => {
         ys.push(y)
     }
 
+    s.draw = () => {
+        s.background(0);
+        s.stroke(255);
+        s.strokeWeight(10)
+        for(let i=0; i < xs.length; i++){
+            let px = s.map(xs[i], 0, 1, 0, width)
+            let py = s.map(ys[i], 0, 1, 0, height)
+            s.point(px,py)
+        }
+    }
 
 
 
