@@ -1,0 +1,10 @@
+Mean Squared Error (MSE) - Loss Function
+measures the average of the squares of the errors—that is, the average squared difference between the estimated values and the actual value. The standard deviation of the residuals (prediction errors). 
+
+Residuals are a measure of how far from the regression line data points are; 
+Root Mean Squared Error (RMSE) is a measure of how spread out these residuals are.
+
+Optimizer - Minimize loss function with learning rate
+LR Equation: y = mx + b; Parameters: m: slope, b: y-intercept
+
+
