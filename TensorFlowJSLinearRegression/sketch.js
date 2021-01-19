@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import { scalar, tensor1d, tidy, train, variable } from '@tensorflow/tfjs'
+import { memory, scalar, tensor1d, tidy, train, variable } from '@tensorflow/tfjs'
 
 let x_vals = []
 let y_vals = []
@@ -83,6 +83,8 @@ const sketch = (s) => {
 
         s.line(x1, y1, x2, y2)
         ys.dispose()
+
+        //console.log(memory().numTensors)
 
     }
 }
