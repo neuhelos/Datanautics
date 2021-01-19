@@ -63,15 +63,14 @@ const sketch = (s) => {
             s.point(px,py)
         }
         
-        tidy(() => {
-            if(x_vals.length > 0 ) {
-                const tys = tensor1d(y_vals)
-                optimizer.minimize( () => loss(predict(x_vals), tys))
-            }
-        })
-    
+      
+        if(x_vals.length > 0 ) {
+            const tys = tensor1d(y_vals)
+            optimizer.minimize( () => tidy (() => loss(predict(x_vals), tys)))
+        }
+        
         const lineX = [0, 1]
-        const ys = predict(lineX)
+        const ys = tidy( () => predict(lineX))
 
         let x1 = s.map(lineX[0], 0, 1, 0, width)
         let x2 = s.map(lineX[1], 0, 1, 0, width)
@@ -82,7 +81,8 @@ const sketch = (s) => {
         let y2 = s.map(lineY[1], 0, 1, height, 0)
 
         s.line(x1, y1, x2, y2)
-        ys.dispose()
+
+        //ys.dispose()
 
         //console.log(memory().numTensors)
 
