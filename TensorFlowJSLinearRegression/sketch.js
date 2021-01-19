@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import tf from ''
+import { scalar, tensor1d, train, variable } from '@tensorflow/tfjs'
 
 let xs = []
 let ys = []
@@ -13,8 +13,10 @@ const sketch = (s) => {
 
     s.setup = () => {
         s.createCanvas(width, height);
+        
+        m = variable(scalar(s.random(1)))
+        b = variable(scalar(s.random(1)))
 
-        m = tf.scalar(random(1))
     }
 
     s.mousePressed = () => {
@@ -27,10 +29,12 @@ const sketch = (s) => {
     }
 
     s.draw = () => {
+        
+        optimizer.minimize(() => loss(f(xs), ys));
+        
         s.background(0);
         s.stroke(255);
         s.strokeWeight(8)
-        
         
         for(let i=0; i < xs.length; i++){
             let px = s.map(xs[i], 0, 1, 0, width)
@@ -38,7 +42,29 @@ const sketch = (s) => {
             s.point(px,py)
         }
     }
+    
+    
+    const learningRate = 0.2;
+    const optimizer = train.sgd(learningRate);
 
+    const loss = (pred, labels) => {
+        //pred.sub(label).square().mean();
+        //pred - predictions from predict function - tensors
+        //labels - actual y values
+        return pred.sub(labels).squared().mean
+
+    }
+
+    const predict = (x) => {
+
+        const xs = tensor1d(x) //turn xs array into tensor
+        //y = mx + b
+        const ys = tfxs.mul(m).add(b)
+    
+        return ys
+    }
+
+    //stochastic gradient descent optimizer - adjusting m and b to minimize loss function
 
 
 
