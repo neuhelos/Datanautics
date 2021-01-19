@@ -24,7 +24,7 @@ const sketch = (s) => {
     s.draw = () => {
         s.background(0);
         s.stroke(255);
-        s.strokeWeight(10)
+        s.strokeWeight(8)
         for(let i=0; i < xs.length; i++){
             let px = s.map(xs[i], 0, 1, 0, width)
             let py = s.map(ys[i], 0, 1, 0, height)
