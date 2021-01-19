@@ -1,8 +1,8 @@
 import p5 from 'p5';
-import { Optimizer, scalar, tensor1d, train, variable } from '@tensorflow/tfjs'
+import { scalar, tensor1d, train, variable } from '@tensorflow/tfjs'
 
-let xs = []
-let ys = []
+let x_vals = []
+let y_vals = []
 
 let m, b
 
@@ -13,17 +13,17 @@ const loss = (pred, labels) => {
     //pred.sub(label).square().mean();
     //pred - predictions from predict function - tensors
     //labels - actual y values
-    return pred.sub(labels).squared().mean
+    return pred.sub(labels).square().mean()
 
 }
 
 const predict = (x) => {
 
-    const xs = tensor1d(x) //turn xs array into tensor
+    const txs = tensor1d(x) //turn xs array into tensor
     //y = mx + b
-    const ys = xs.mul(m).add(b)
+    const tys = txs.mul(m).add(b)
 
-    return ys //returns tensor
+    return tys //returns tensor
 }
 
 //stochastic gradient descent optimizer - adjusting m and b to minimize loss function
@@ -46,23 +46,28 @@ const sketch = (s) => {
         let x = s.map(s.mouseX, 0, width, 0, 1) //Normalizing x and y values with a range of 0-1
         let y = s.map(s.mouseY, 0, height, 0, 1)
         
-        xs.push(x),
-        ys.push(y)
+        x_vals.push(x),
+        y_vals.push(y)
     }
 
     s.draw = () => {
         
-        optimizer.minimize( () => loss(predict(xs), ys));
         
         s.background(0);
         s.stroke(255);
         s.strokeWeight(8)
         
-        for(let i=0; i < xs.length; i++){
-            let px = s.map(xs[i], 0, 1, 0, width)
-            let py = s.map(ys[i], 0, 1, 0, height)
+        for(let i=0; i < x_vals.length; i++){
+            let px = s.map(x_vals[i], 0, 1, 0, width)
+            let py = s.map(y_vals[i], 0, 1, 0, height)
             s.point(px,py)
         }
+        
+        if(x_vals.length > 0 ) {
+            const tys = tensor1d(y_vals)
+            optimizer.minimize( () => loss(predict(x_vals), tys))
+        }
+
     }
     
 }
