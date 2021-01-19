@@ -52,7 +52,6 @@ const sketch = (s) => {
 
     s.draw = () => {
         
-        
         s.background(0);
         s.stroke(255);
         s.strokeWeight(8)
@@ -63,19 +62,22 @@ const sketch = (s) => {
             s.point(px,py)
         }
         
-      
-        if(x_vals.length > 0 ) {
-            const tys = tensor1d(y_vals)
-            optimizer.minimize( () => tidy (() => loss(predict(x_vals), tys)))
-        }
+
+        tidy ( () => {
+            if(x_vals.length > 0 ) {
+                const tys = tensor1d(y_vals)
+                optimizer.minimize( () => loss(predict(x_vals), tys))
+            }
+        })
         
         const lineX = [0, 1]
         const ys = tidy( () => predict(lineX))
+        let lineY = ys.dataSync()
+        ys.dispose()
 
         let x1 = s.map(lineX[0], 0, 1, 0, width)
         let x2 = s.map(lineX[1], 0, 1, 0, width)
         
-        let lineY = ys.dataSync()
 
         let y1 = s.map(lineY[0], 0, 1, height, 0)
         let y2 = s.map(lineY[1], 0, 1, height, 0)
@@ -84,7 +86,7 @@ const sketch = (s) => {
 
         //ys.dispose()
 
-        //console.log(memory().numTensors)
+        console.log(memory().numTensors)
 
     }
 }
