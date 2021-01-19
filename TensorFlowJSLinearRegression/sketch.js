@@ -1,10 +1,32 @@
 import p5 from 'p5';
-import { scalar, tensor1d, train, variable } from '@tensorflow/tfjs'
+import { Optimizer, scalar, tensor1d, train, variable } from '@tensorflow/tfjs'
 
 let xs = []
 let ys = []
 
 let m, b
+
+const learningRate = 0.2;
+const optimizer = train.sgd(learningRate);
+
+const loss = (pred, labels) => {
+    //pred.sub(label).square().mean();
+    //pred - predictions from predict function - tensors
+    //labels - actual y values
+    return pred.sub(labels).squared().mean
+
+}
+
+const predict = (x) => {
+
+    const xs = tensor1d(x) //turn xs array into tensor
+    //y = mx + b
+    const ys = xs.mul(m).add(b)
+
+    return ys //returns tensor
+}
+
+//stochastic gradient descent optimizer - adjusting m and b to minimize loss function
 
 const sketch = (s) => {
     
@@ -30,7 +52,7 @@ const sketch = (s) => {
 
     s.draw = () => {
         
-        optimizer.minimize(() => loss(f(xs), ys));
+        optimizer.minimize( () => loss(predict(xs), ys));
         
         s.background(0);
         s.stroke(255);
@@ -43,34 +65,6 @@ const sketch = (s) => {
         }
     }
     
-    
-    const learningRate = 0.2;
-    const optimizer = train.sgd(learningRate);
-
-    const loss = (pred, labels) => {
-        //pred.sub(label).square().mean();
-        //pred - predictions from predict function - tensors
-        //labels - actual y values
-        return pred.sub(labels).squared().mean
-
-    }
-
-    const predict = (x) => {
-
-        const xs = tensor1d(x) //turn xs array into tensor
-        //y = mx + b
-        const ys = tfxs.mul(m).add(b)
-    
-        return ys
-    }
-
-    //stochastic gradient descent optimizer - adjusting m and b to minimize loss function
-
-
-
 }
-
-
-
 
 const sketchInstance = new p5(sketch)
